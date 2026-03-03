@@ -1,443 +1,679 @@
-// 题库数据
+// 科学化心理测试系统
+// 基于Sternberg爱情三角理论、依恋理论、大五人格等心理学理论
+
 const questionsData = {
     'mate': [
+        // 维度1: 激情(Passion) - 身体吸引、浪漫
         {
-            question: '在选择伴侣时，如果对方有这些特质，你会优先选择哪一个？',
+            question: '在选择伴侣时，身体吸引力（外貌、身材）对你有多重要？',
             options: [
-                '有稳定工作和经济基础',
-                '颜值高、气质好',
-                '性格温柔、善解人意',
-                '幽默风趣、会聊天'
+                '非常不重要',
+                '不太重要',
+                '一般',
+                '比较重要',
+                '非常重要'
             ],
-            type: 'material'
+            dimension: 'passion',
+            weight: 1
         },
         {
-            question: '第一次约会时，对方迟到了30分钟，你的反应是？',
+            question: '你期望与伴侣保持怎样的身体亲密程度？',
             options: [
-                '理解，可能有事耽搁了',
-                '有点不爽，但不会表现出来',
-                '直接问原因，看是否合理',
-                '很生气，觉得不尊重人'
+                '很少，更注重精神交流',
+                '偶尔，不是特别需要',
+                '适中，自然而然就好',
+                '比较频繁，这很重要',
+                '非常频繁，是关系的重要部分'
             ],
-            type: 'tolerance'
+            dimension: 'passion',
+            weight: 1
         },
         {
-            question: '你更希望你的另一半是什么样的人？',
+            question: '伴侣为你准备惊喜、制造浪漫对你来说重不重要？',
             options: [
-                '事业有成，能给我安全感',
-                '浪漫多情，会制造惊喜',
-                '顾家体贴，以家庭为重',
-                '独立自主，有自己的生活'
+                '完全不需要，觉得没必要',
+                '不太需要，实际更重要',
+                '有时需要，但不强求',
+                '比较需要，会让我开心',
+                '非常需要，浪漫很重要'
             ],
-            type: 'lifestyle'
+            dimension: 'passion',
+            weight: 1
+        },
+        
+        // 维度2: 亲密(Intimacy) - 情感连接、理解、支持
+        {
+            question: '你希望伴侣在多大程度上理解你的内心想法和感受？',
+            options: [
+                '不需要完全理解',
+                '理解一部分就够了',
+                '理解大部分比较好',
+                '希望深入理解',
+                '完全理解，心灵相通'
+            ],
+            dimension: 'intimacy',
+            weight: 1.2
         },
         {
-            question: '你认为恋爱关系中最重要的是什么？',
+            question: '当你遇到困难或心情不好时，你期望伴侣如何对待你？',
             options: [
-                '物质基础，面包比爱情重要',
-                '精神契合，三观一致最重要',
-                '相互吸引，要有心动的感觉',
-                '相互信任，坦诚相待最关键'
+                '给我独处空间就好',
+                '简单安慰一下',
+                '耐心倾听我的倾诉',
+                '积极帮我分析解决',
+                '无条件支持和陪伴'
             ],
-            type: 'values'
+            dimension: 'intimacy',
+            weight: 1.2
         },
         {
-            question: '如果对方家境普通但人品很好，你会选择TA吗？',
+            question: '你认为伴侣之间需要分享到什么程度？',
             options: [
-                '会考虑，但还要看其他条件',
-                '不太会，经济基础很重要',
-                '会，感情比物质更重要',
-                '看缘分，不会特别在意这个'
+                '保留私人空间，不必都说',
+                '分享大致情况即可',
+                '大部分事情都分享',
+                '几乎所有事都想告诉对方',
+                '完全透明，没有秘密'
             ],
-            type: 'material'
+            dimension: 'intimacy',
+            weight: 1.2
+        },
+        
+        // 维度3: 承诺(Commitment) - 长期规划、责任感
+        {
+            question: '你对婚姻和长期关系的态度是？',
+            options: [
+                '不确定，走一步看一步',
+                '可以考虑，但不着急',
+                '希望稳定，但需要时间',
+                '比较明确，想要长期关系',
+                '非常明确，以结婚为目的'
+            ],
+            dimension: 'commitment',
+            weight: 1.3
         },
         {
-            question: '你能接受与另一半异地恋吗？',
+            question: '面对感情中的困难和挑战，你会？',
             options: [
-                '完全可以，距离不是问题',
-                '可以尝试，但希望不要太久',
-                '比较困难，需要经常见面',
-                '不能接受，一定要在同一个城市'
+                '可能会选择放弃',
+                '视情况而定',
+                '愿意尝试解决',
+                '会努力克服',
+                '无论如何都会坚持'
             ],
-            type: 'commitment'
+            dimension: 'commitment',
+            weight: 1.3
         },
         {
-            question: '在恋爱中，你更看重对方的哪一点？',
+            question: '你愿意为这段关系做出多大的妥协和牺牲？',
             options: [
-                '对方的家庭背景和经济条件',
-                '对方对我的态度和付出',
-                '两个人在一起的感觉',
-                '对方的个人能力和发展潜力'
+                '不太愿意改变自己',
+                '可以做小的调整',
+                '愿意适度妥协',
+                '可以做较大改变',
+                '愿意为对方改变很多'
             ],
-            type: 'priority'
+            dimension: 'commitment',
+            weight: 1.3
+        },
+        
+        // 维度4: 价值观匹配度
+        {
+            question: '伴侣的教育背景、职业发展对你的重要性？',
+            options: [
+                '完全不在意',
+                '不太重要',
+                '有一定要求',
+                '比较重要',
+                '非常重要，必须门当户对'
+            ],
+            dimension: 'values',
+            weight: 1.1
         },
         {
-            question: '你理想中的约会方式是什么样的？',
+            question: '你对伴侣的经济能力有什么期望？',
             options: [
-                '高档餐厅、浪漫氛围',
-                '一起做饭、在家看电影',
-                '户外运动、探险旅行',
-                '逛街购物、喝下午茶'
+                '不在意，感情最重要',
+                '能养活自己就好',
+                '希望有稳定收入',
+                '希望经济条件较好',
+                '必须有很好的经济基础'
             ],
-            type: 'lifestyle'
+            dimension: 'values',
+            weight: 1.1
         },
         {
-            question: '吵架时对方说了很伤人的话，你会怎么做？',
+            question: '关于生育和家庭规划，你认为伴侣的想法需要多一致？',
             options: [
-                '冷战，等对方先道歉',
-                '当场翻脸，无法容忍',
-                '虽然难过，但会理性沟通',
-                '装作不在意，但心里记着'
+                '可以不一样，慢慢商量',
+                '大致方向一样就行',
+                '主要观点应该一致',
+                '必须高度一致',
+                '完全一致，这是原则'
             ],
-            type: 'conflict'
+            dimension: 'values',
+            weight: 1.1
+        },
+        
+        // 维度5: 独立性需求
+        {
+            question: '你希望与伴侣保持怎样的独立空间？',
+            options: [
+                '需要很多独立空间',
+                '需要一定的个人时间',
+                '适度平衡',
+                '更喜欢腻在一起',
+                '几乎所有时间都想在一起'
+            ],
+            dimension: 'independence',
+            weight: 0.9,
+            reverse: true  // 反向计分
         },
         {
-            question: '你对另一半的身高有要求吗？',
+            question: '你能接受伴侣有自己的兴趣爱好和社交圈吗？',
             options: [
-                '必须符合我的理想标准',
-                '有要求，但可以适当接受',
-                '不是特别在意',
-                '完全不在乎'
+                '完全接受，各有各的生活',
+                '可以，但希望了解',
+                '可以，但希望偶尔参与',
+                '希望大部分时间在一起',
+                '不太能接受，希望共同爱好'
             ],
-            type: 'appearance'
+            dimension: 'independence',
+            weight: 0.9,
+            reverse: true
+        },
+        
+        // 维度6: 冲突处理
+        {
+            question: '当你们意见不一致时，你倾向于？',
+            options: [
+                '坚持己见，很难妥协',
+                '争论一番，寻找答案',
+                '各退一步，寻求平衡',
+                '更愿意迁就对方',
+                '完全听从对方'
+            ],
+            dimension: 'conflict',
+            weight: 1.0
         },
         {
-            question: '如果对方工作很忙，经常加班陪伴你的时间少，你会？',
+            question: '你能容忍伴侣的多少缺点和坏习惯？',
             options: [
-                '理解支持，事业重要',
-                '希望TA能多陪陪我',
-                '会有点不满，但能接受',
-                '无法忍受，感情需要时间陪伴'
+                '很难容忍，要求很高',
+                '可以容忍一些小问题',
+                '大部分都能接受',
+                '只要不触碰底线都行',
+                '可以包容几乎所有'
             ],
-            type: 'understanding'
-        },
-        {
-            question: '你更喜欢什么性格的另一半？',
-            options: [
-                '外向开朗，能带动气氛',
-                '安静内敛，成熟稳重',
-                '温柔体贴，善解人意',
-                '独立自信，有主见'
-            ],
-            type: 'personality'
-        },
-        {
-            question: '对方经常在朋友圈晒你们的合照，你的感觉是？',
-            options: [
-                '很开心，喜欢被公开',
-                '无所谓，随便对方',
-                '有点害羞，但能接受',
-                '不太喜欢，觉得太高调'
-            ],
-            type: 'privacy'
-        },
-        {
-            question: '恋爱中你能接受的消费方式是？',
-            options: [
-                'AA制，经济独立',
-                '男方多付一些比较合理',
-                '谁有钱谁付，无所谓',
-                '应该由男方承担大部分'
-            ],
-            type: 'money'
-        },
-        {
-            question: '你期望婚后两人的生活状态是？',
-            options: [
-                '继续打拼事业，追求更好的物质生活',
-                '稳定平淡，岁月静好就很满足',
-                '充满激情，不断尝试新事物',
-                '以家庭为重，照顾家人和孩子'
-            ],
-            type: 'future'
-        },
-        {
-            question: '如果对方的父母不喜欢你，你会怎么办？',
-            options: [
-                '努力改变自己，争取他们的认可',
-                '坚持到底，感情最重要',
-                '会很难过，可能会考虑分手',
-                '直接放弃，家庭反对太难克服'
-            ],
-            type: 'family'
+            dimension: 'tolerance',
+            weight: 1.0
         }
     ],
+    
     'single': [
+        // 依恋类型评估 - 基于Hazan和Shaver的依恋理论
         {
-            question: '当有人向你表白时，你通常会怎么做？',
+            question: '在亲密关系中，你通常的感受是？',
             options: [
-                '先观察一段时间再说',
-                '直接拒绝，没感觉就是没感觉',
-                '给对方机会试试看',
-                '很纠结，不知道怎么回应'
+                '我很容易与人亲近，也不担心被抛弃',
+                '我希望亲密，但担心对方不是真心的',
+                '我不太舒服与人太亲密',
+                '我渴望亲密，但又害怕受伤',
+                '我更喜欢保持独立，不依赖别人'
             ],
-            type: 'attitude'
+            dimension: 'attachment',
+            weight: 1.5
         },
         {
-            question: '你对另一半的要求标准是？',
+            question: '当喜欢的人没有及时回复消息，你会？',
             options: [
-                '要求很高，宁缺毋滥',
-                '差不多就行，不强求完美',
-                '有基本要求，但会综合考虑感觉',
-                '没有固定标准，完全看眼缘'
+                '不在意，忙很正常',
+                '有点在意，但不会多想',
+                '会多想，但不表现出来',
+                '很焦虑，反复查看',
+                '觉得对方不在意我'
             ],
-            type: 'standard'
+            dimension: 'anxiety',
+            weight: 1.3
         },
         {
-            question: '你曾经主动追求过喜欢的人吗？',
+            question: '关于表达爱意和需求，你的状态是？',
             options: [
-                '从来没有，比较被动',
-                '偶尔会，但不会太主动',
-                '经常主动，看到喜欢的就会去追',
-                '追过，但都没成功'
+                '很自然，想说就说',
+                '比较自然，但会考虑时机',
+                '有点困难，需要鼓起勇气',
+                '很困难，经常压抑',
+                '几乎不会主动表达'
             ],
-            type: 'initiative'
+            dimension: 'expression',
+            weight: 1.2
+        },
+        
+        // 自我价值感
+        {
+            question: '你对自己在恋爱市场中的竞争力评估是？',
+            options: [
+                '很有信心，条件不错',
+                '比较有信心',
+                '一般般，没什么特别',
+                '不太自信',
+                '很不自信，觉得配不上别人'
+            ],
+            dimension: 'self_worth',
+            weight: 1.4
         },
         {
-            question: '你认为自己单身的最大原因是什么？',
+            question: '你认为自己值得被爱吗？',
             options: [
-                '生活圈子太小，认识的人少',
-                '工作太忙了，没时间谈恋爱',
-                '还没遇到真正合适的人',
-                '对爱情没有太大的期待'
+                '当然，我值得很好的爱',
+                '我觉得我值得',
+                '应该吧，但不确定',
+                '不太确定',
+                '觉得自己不够好'
             ],
-            type: 'reason'
+            dimension: 'self_worth',
+            weight: 1.4
+        },
+        
+        // 行动力
+        {
+            question: '遇到喜欢的人，你采取行动的可能性？',
+            options: [
+                '很高，会主动出击',
+                '比较高，会创造机会',
+                '一般，看情况',
+                '比较低，很被动',
+                '几乎不会，只能等别人来'
+            ],
+            dimension: 'initiative',
+            weight: 1.3
         },
         {
-            question: '如果朋友给你介绍相亲对象，你会？',
+            question: '你为了脱单做过哪些努力？',
             options: [
-                '不喜欢相亲这种方式，觉得太功利',
-                '可以试试，多一个认识人的机会',
-                '要求先看对方的照片和资料',
-                '直接拒绝，不想被别人安排'
+                '很多，积极参加活动、改变自己',
+                '一些，会主动社交',
+                '偶尔，但不够持续',
+                '很少，主要靠等待',
+                '几乎没有，顺其自然'
             ],
-            type: 'method'
+            dimension: 'initiative',
+            weight: 1.3
+        },
+        
+        // 机会度
+        {
+            question: '你的社交圈子和活动频率如何？',
+            options: [
+                '很广泛，经常认识新人',
+                '比较广泛，有一定社交',
+                '一般，圈子相对固定',
+                '比较窄，很少社交',
+                '非常窄，基本不社交'
+            ],
+            dimension: 'opportunity',
+            weight: 1.2
         },
         {
-            question: '你目前对恋爱的态度是？',
+            question: '你对线上交友（交友软件、相亲）的态度？',
             options: [
-                '顺其自然，不强求',
-                '积极寻找对象，主动出击',
-                '很想脱单，但不知道怎么办',
-                '享受单身生活，没有特别想恋爱'
+                '很开放，愿意尝试',
+                '可以接受',
+                '不排斥，但不主动',
+                '不太能接受',
+                '完全不能接受'
             ],
-            type: 'desire'
+            dimension: 'opportunity',
+            weight: 1.2
+        },
+        
+        // 择偶标准
+        {
+            question: '你对另一半的要求标准属于？',
+            options: [
+                '很灵活，看感觉',
+                '有基本要求',
+                '有明确标准',
+                '标准比较高',
+                '标准很高，近乎完美'
+            ],
+            dimension: 'standard',
+            weight: 1.1
         },
         {
-            question: '你觉得自己在人际交往中的情商如何？',
+            question: '现实中符合你标准的人大约有多少？',
             options: [
-                '比较高，善于沟通和表达',
-                '一般般，不太擅长表达感情',
-                '有点低，经常说错话得罪人',
-                '不太清楚，没想过这个问题'
+                '很多，不难找到',
+                '不少，有一定选择',
+                '一些，需要慢慢找',
+                '很少，比较难找',
+                '几乎没有，太难了'
             ],
-            type: 'eq'
+            dimension: 'standard',
+            weight: 1.1
+        },
+        
+        // 恋爱意愿
+        {
+            question: '你现在对恋爱的渴望程度？',
+            options: [
+                '非常强烈，很想脱单',
+                '比较强烈',
+                '一般，有人合适就谈',
+                '不太强烈',
+                '很弱，更享受单身'
+            ],
+            dimension: 'desire',
+            weight: 1.3
         },
         {
-            question: '如果遇到喜欢的人，你会怎么做？',
+            question: '如果长期单身，你的焦虑程度？',
             options: [
-                '默默关注，不敢表白',
-                '创造机会慢慢接近对方',
-                '直接表白，勇敢追求',
-                '想太多最后放弃'
+                '完全不焦虑',
+                '有一点，但能接受',
+                '比较焦虑',
+                '很焦虑',
+                '非常焦虑，影响生活'
             ],
-            type: 'action'
+            dimension: 'desire',
+            weight: 1.3
+        },
+        
+        // 过往经历
+        {
+            question: '你的恋爱经历对现在的影响？',
+            options: [
+                '从没谈过，没有经验',
+                '有过，但已完全放下',
+                '有些影响，但不大',
+                '影响较大，还在恢复',
+                '影响很大，走不出来'
+            ],
+            dimension: 'past',
+            weight: 1.0
         },
         {
-            question: '你平时参加社交活动的频率如何？',
+            question: '你从过往经历中学到了什么？',
             options: [
-                '很少，基本宅在家里',
-                '偶尔参加，但不会主动组织',
-                '经常参加各种社交活动',
-                '不喜欢社交，更喜欢独处'
+                '更了解自己，知道要什么',
+                '学会了如何相处',
+                '变得更谨慎',
+                '变得更害怕',
+                '不敢再相信爱情'
             ],
-            type: 'social'
+            dimension: 'past',
+            weight: 1.0
+        },
+        
+        // 情商和沟通
+        {
+            question: '你在社交中感知他人情绪的能力？',
+            options: [
+                '很强，能敏锐察觉',
+                '比较强',
+                '一般',
+                '比较弱',
+                '很弱，经常误解'
+            ],
+            dimension: 'eq',
+            weight: 1.2
         },
         {
-            question: '你对过去的恋爱经历（如果有）持什么态度？',
+            question: '你的情感表达和沟通能力如何？',
             options: [
-                '已经彻底放下了',
-                '偶尔还会想起前任',
-                '还没完全走出上一段感情',
-                '从来没有谈过恋爱'
+                '很好，能清晰表达',
+                '比较好',
+                '一般',
+                '比较差，常词不达意',
+                '很差，不知如何表达'
             ],
-            type: 'past'
-        },
-        {
-            question: '你觉得自己在感情方面最大的缺点是？',
-            options: [
-                '太挑剔，对对方要求太高',
-                '太被动，不会主动表达',
-                '不够自信，容易自卑',
-                '太独立，觉得不需要另一半'
-            ],
-            type: 'weakness'
-        },
-        {
-            question: '看到身边朋友恋爱秀恩爱时，你的感受是？',
-            options: [
-                '很羡慕，也想赶快谈恋爱',
-                '没什么感觉，不觉得有什么',
-                '有点酸，但不会说出来',
-                '觉得没必要秀，单身挺好的'
-            ],
-            type: 'envy'
-        },
-        {
-            question: '你愿意为了一段感情改变自己吗？',
-            options: [
-                '完全可以，爱一个人就要为TA付出',
-                '可以改一些小毛病，但有底线',
-                '不太愿意，做真实的自己最重要',
-                '完全不会，对方要接受真实的我'
-            ],
-            type: 'flexibility'
-        },
-        {
-            question: '你理想的恋爱节奏是怎样的？',
-            options: [
-                '快速确定关系，不想浪费时间',
-                '慢慢了解对方，不着急在一起',
-                '感觉对了就可以在一起',
-                '没想过这个问题，随缘吧'
-            ],
-            type: 'pace'
-        },
-        {
-            question: '你在感情中最害怕的是什么？',
-            options: [
-                '被辜负、被背叛',
-                '失去自我、过度依赖对方',
-                '频繁争吵、冷战',
-                '最后还是会分开，白白浪费时间'
-            ],
-            type: 'fear'
-        },
-        {
-            question: '如果一直单身下去，你的心态是？',
-            options: [
-                '会很焦虑，一定要尽快脱单',
-                '有点担心，但也能接受',
-                '无所谓，一个人也挺好的',
-                '没想过这个问题，应该不会一直单身吧'
-            ],
-            type: 'acceptance'
+            dimension: 'eq',
+            weight: 1.2
         }
     ]
 };
 
-// 择偶标准结果（保持原有结果）
-const mateResults = {
-    'material_high': {
-        icon: '💰',
-        badge: '现实主义者',
-        title: '你是一个注重物质基础的人',
-        desc: '你认为感情需要建立在稳定的经济基础之上。你不是拜金，而是理性地认为物质是感情的保障。你希望另一半有稳定的工作和收入，能给你安全感和稳定的生活。你相信"贫贱夫妻百事哀"，认为物质条件是感情长久的基础。',
-        tips: [
-            '在追求物质的同时，也要重视精神层面的契合',
-            '不要把所有标准都放在经济上，性格也很重要',
-            '适当降低物质要求，给自己更多选择机会',
-            '记住，金钱不是幸福的唯一标准'
+// 科学的结果分析系统
+const scientificResults = {
+    'mate': {
+        dimensions: [
+            { name: 'passion', label: '激情维度', description: '身体吸引、浪漫、激情' },
+            { name: 'intimacy', label: '亲密维度', description: '情感连接、理解、支持' },
+            { name: 'commitment', label: '承诺维度', description: '长期规划、责任感、忠诚' },
+            { name: 'values', label: '价值观', description: '人生观、金钱观、家庭观' },
+            { name: 'independence', label: '独立性', description: '个人空间、自主性' },
+            { name: 'conflict', label: '冲突处理', description: '沟通能力、妥协意愿' },
+            { name: 'tolerance', label: '包容度', description: '接纳差异的能力' }
+        ],
+        types: [
+            {
+                condition: (scores) => scores.passion > 3.5 && scores.intimacy < 3 && scores.commitment < 3,
+                icon: '🔥',
+                badge: '激情主导型',
+                title: '你追求强烈的浪漫感受和身体吸引',
+                desc: '你在择偶时高度重视激情和浪漫，希望有心跳加速的恋爱感觉。但相对来说，你对深层情感连接和长期承诺的需求较低。你可能更享受恋爱初期的激情阶段，对平淡期可能会感到乏味。',
+                tips: [
+                    '激情会随时间减弱，需要培养更深层的情感连接',
+                    '学会在平淡中发现美好，不要只追求新鲜感',
+                    '承诺和责任感是长期关系的基础',
+                    '适当提升对亲密度和承诺的重视'
+                ]
+            },
+            {
+                condition: (scores) => scores.intimacy > 3.5 && scores.passion < 3,
+                icon: '💝',
+                badge: '亲密主导型',
+                title: '你最看重心灵相通和深度理解',
+                desc: '你的择偶标准以情感亲密为核心，希望找到一个真正理解你、支持你的伴侣。你重视精神交流胜过身体吸引，追求心灵层面的契合。你可能对浪漫和激情的需求不高，更看重两个人的默契和相互理解。',
+                tips: [
+                    '你的择偶观很成熟，但也要给关系一些激情',
+                    '适度的浪漫可以为感情增色',
+                    '不要忽视身体亲密度的重要性',
+                    '保持开放，给不那么"完美契合"的人机会'
+                ]
+            },
+            {
+                condition: (scores) => scores.commitment > 3.8,
+                icon: '💍',
+                badge: '承诺主导型',
+                title: '你追求稳定长久的关系',
+                desc: '你的择偶标准以长期承诺为核心，希望找到一个可以共度一生的人。你非常重视责任感和稳定性，愿意为关系做出妥协和牺牲。你可能以结婚为目的来恋爱，对关系有明确的规划和期望。',
+                tips: [
+                    '你的择偶观很务实，但不要过于功利',
+                    '承诺很重要，但激情和亲密同样不可或缺',
+                    '给关系一些自然发展的空间',
+                    '不要因为想要稳定而忽视真实感受'
+                ]
+            },
+            {
+                condition: (scores) => scores.passion > 3.2 && scores.intimacy > 3.2 && scores.commitment > 3.2,
+                icon: '💖',
+                badge: '完满爱情型',
+                title: '你追求激情、亲密与承诺的平衡',
+                desc: '你的择偶标准非常平衡和全面，既重视激情和浪漫，也看重情感亲密和相互理解，同时对长期承诺有清晰的期待。这是Sternberg爱情三角理论中的"完满之爱"，是最理想的爱情类型。',
+                tips: [
+                    '你的择偶标准很成熟和全面',
+                    '保持这种平衡，但也要有耐心',
+                    '完满之爱需要时间培养，不是一蹴而就',
+                    '给关系时间慢慢发展各个维度'
+                ]
+            },
+            {
+                condition: (scores) => scores.values > 4.0,
+                icon: '⚖️',
+                badge: '现实考量型',
+                title: '你高度重视现实条件和价值观匹配',
+                desc: '你在择偶时非常注重现实因素，包括教育背景、经济能力、家庭观念等。你相信门当户对，认为价值观一致是关系稳定的基础。你的择偶标准比较理性和务实。',
+                tips: [
+                    '现实条件重要，但不是全部',
+                    '给感觉和化学反应一些空间',
+                    '过于重视条件可能错过真正合适的人',
+                    '适当降低一些非核心标准'
+                ]
+            },
+            {
+                condition: (scores) => scores.independence > 3.8,
+                icon: '🦋',
+                badge: '独立空间型',
+                title: '你需要在关系中保持较大的独立性',
+                desc: '你重视个人空间和自主性，不希望恋爱关系过于黏腻。你希望即使在亲密关系中也能保持自我，有自己的生活和兴趣。你可能害怕失去自由，倾向于保持一定的距离感。',
+                tips: [
+                    '独立很好，但也要学会适度依赖',
+                    '亲密不等于失去自我',
+                    '适当的分享和依赖能加深感情',
+                    '找一个同样重视独立空间的伴侣'
+                ]
+            },
+            {
+                condition: (scores) => true, // 默认类型
+                icon: '🌈',
+                badge: '综合平衡型',
+                title: '你的择偶标准综合而平衡',
+                desc: '你的择偶标准涵盖多个维度，没有特别突出的偏好。你会综合考虑激情、亲密、承诺、价值观等多方面因素，寻找一个各方面都比较契合的伴侣。你的择偶观比较成熟和理性。',
+                tips: [
+                    '你的择偶观很全面和成熟',
+                    '保持这种平衡，但也要听从内心感受',
+                    '不要因为追求完美而错过好的机会',
+                    '给彼此时间慢慢了解和磨合'
+                ]
+            }
         ]
     },
-    'appearance_high': {
-        icon: '😍',
-        badge: '颜值控',
-        title: '你是一个注重外在的人',
-        desc: '你相信"始于颜值"的道理，认为外表是第一印象，也是吸引力的重要来源。你欣赏美好的事物，希望另一半有不错的颜值和气质。你觉得看着赏心悦目的人在一起才会舒服，外表是感情的基础。不过你也明白，长久的感情需要更多内在的支撑。',
-        tips: [
-            '外表会随时间改变，内在美更持久',
-            '给外表不够出众但内在优秀的人一个机会',
-            '美是主观的，不同阶段审美会变化',
-            '性格合适比颜值高更重要'
-        ]
-    },
-    'personality_high': {
-        icon: '💝',
-        badge: '内在美追求者',
-        title: '你是一个注重内在的人',
-        desc: '你更看重对方的性格和品质，认为两个人在一起最重要的是相处舒服。你希望另一半温柔体贴、善解人意，能理解你、包容你。你相信好的性格是感情幸福的关键，外表和物质都是次要的。你追求的是心灵的契合和精神的共鸣。',
-        tips: [
-            '你的标准很成熟，但也要给对方成长的空间',
-            '完美的性格不存在，接受对方的小缺点',
-            '注意不要过度付出，感情需要平等',
-            '保持你的择偶标准，会遇到对的人'
-        ]
-    },
-    'balanced': {
-        icon: '⚖️',
-        badge: '平衡型',
-        title: '你是一个综合考虑的人',
-        desc: '你的择偶标准比较平衡，不会单纯看重某一方面。你认为感情需要多方面的考量，包括物质、外表、性格、三观等。你希望找到一个综合条件不错的人，既有一定的经济基础，也有不错的性格和外表。你理性而现实，知道没有完美的人，会在各方面做出权衡。',
-        tips: [
-            '你的标准很成熟理智，继续保持',
-            '不要因为追求平衡而错过真正合适的人',
-            '有时候感觉比条件更重要',
-            '给彼此时间，慢慢了解和磨合'
-        ]
-    }
-};
-
-// 单身原因结果（保持原有结果）
-const singleResults = {
-    'too_picky': {
-        icon: '🎯',
-        badge: '完美主义者',
-        title: '你的标准可能有点高',
-        desc: '你对另一半有比较明确的要求，希望找到一个各方面都比较理想的人。你宁缺毋滥，不愿意将就。这种态度很好，但可能也让你错过了一些潜在的机会。有时候，完美的人是不存在的，重要的是找到一个合适的人，然后一起成长。',
-        tips: [
-            '适当降低一些非核心的标准',
-            '给看起来"还不错"的人一个机会',
-            '了解一个人需要时间，不要急于下判断',
-            '记住，没有完美的人，只有合适的人'
-        ]
-    },
-    'too_passive': {
-        icon: '😶',
-        badge: '被动等待者',
-        title: '你太被动了',
-        desc: '你可能在感情中比较被动，习惯等待别人来追求你，而不是主动出击。你可能觉得真正的缘分会自然而然地到来，但其实很多美好的感情都需要主动争取。被动等待可能让你错过很多机会，试着更主动一些，会有不一样的收获。',
-        tips: [
-            '看到喜欢的人，要勇敢一点',
-            '主动不等于轻浮，而是成熟的表现',
-            '创造更多社交机会，扩大交友圈',
-            '放下顾虑，大胆表达自己的感受'
-        ]
-    },
-    'circle_small': {
-        icon: '🔄',
-        badge: '社交型单身',
-        title: '你的圈子可能太小了',
-        desc: '你单身的主要原因可能是认识的人太少，生活圈子比较固定。你可能大部分时间都在工作或宅在家里，很少参加社交活动。扩大社交圈是解决这个问题的关键，多参加一些活动，认识更多的人，才有更多遇到对的人的机会。',
-        tips: [
-            '多参加社交活动，扩大交友圈',
-            '培养一些兴趣爱好，认识志同道合的人',
-            '让朋友介绍，相亲也是一个不错的选择',
-            '尝试线上交友，但要注意安全'
-        ]
-    },
-    'not_ready': {
-        icon: '🌱',
-        badge: '享受单身者',
-        title: '你可能还没准备好恋爱',
-        desc: '你目前可能更享受单身的状态，对恋爱没有特别强烈的渴望。你可能觉得一个人挺好的，自由自在，不用考虑别人的感受。这种状态没有问题，每个人都有自己的节奏。等到真正想要恋爱的时候，自然就会去争取了。',
-        tips: [
-            '享受当下的单身生活，不用着急',
-            '等准备好了再开始，感情需要用心经营',
-            '保持开放的心态，机会来了不要错过',
-            '单身也可以很精彩，不要因为单身而焦虑'
-        ]
-    },
-    'low_eq': {
-        icon: '🤔',
-        badge: '情商修炼者',
-        title: '你可能需要提升情商',
-        desc: '你在人际交往中可能不太擅长表达和沟通，有时候说话做事不太能照顾到对方的感受。这可能让一些潜在的对象对你产生误解。情商是可以培养的，多观察、多学习、多练习，慢慢就会进步。提升情商会让你在感情中更得心应手。',
-        tips: [
-            '多观察别人如何沟通和相处',
-            '学会换位思考，考虑对方的感受',
-            '提升表达能力，学会好好说话',
-            '不要害怕犯错，从经验中学习'
+    
+    'single': {
+        dimensions: [
+            { name: 'attachment', label: '依恋类型', description: '在亲密关系中的安全感' },
+            { name: 'anxiety', label: '焦虑程度', description: '对关系的不安全感' },
+            { name: 'expression', label: '表达能力', description: '情感表达和沟通' },
+            { name: 'self_worth', label: '自我价值感', description: '对自己的评价和信心' },
+            { name: 'initiative', label: '主动性', description: '采取行动的意愿' },
+            { name: 'opportunity', label: '机会度', description: '社交圈和认识新人的机会' },
+            { name: 'standard', label: '择偶标准', description: '对另一半的要求高低' },
+            { name: 'desire', label: '恋爱意愿', description: '对恋爱的渴望程度' },
+            { name: 'past', label: '过往影响', description: '过去经历的影响' },
+            { name: 'eq', label: '情商', description: '情绪感知和沟通能力' }
+        ],
+        types: [
+            {
+                condition: (scores) => scores.anxiety > 3.5 && scores.self_worth < 3,
+                icon: '😰',
+                badge: '焦虑依恋型',
+                title: '你在关系中容易焦虑和缺乏安全感',
+                desc: '你可能属于焦虑型依恋人格。你渴望亲密关系，但同时又害怕被拒绝和抛弃。你可能对伴侣的行为过度敏感，经常需要确认对方的爱意。你的自我价值感较低，容易把问题归咎于自己。这种焦虑可能让潜在的伴侣感到压力，反而推开了对方。',
+                tips: [
+                    '先建立自我价值感，学会爱自己',
+                    '不要把所有希望寄托在他人身上',
+                    '学会控制焦虑，不要过度试探对方',
+                    '寻求心理咨询，了解依恋模式的根源',
+                    '练习信任，给对方空间'
+                ],
+                recommendation: '建议阅读《依恋》一书，了解自己的依恋模式'
+            },
+            {
+                condition: (scores) => scores.initiative < 2.5 && scores.opportunity < 3,
+                icon: '🐌',
+                badge: '被动等待型',
+                title: '你过于被动，缺乏行动力',
+                desc: '你在感情中非常被动，很少主动出击。同时你的社交圈子也比较狭窄，认识新人的机会有限。你可能期待缘分自然降临，但不采取实际行动。这种被动等待的策略大大降低了你脱单的可能性。',
+                tips: [
+                    '主动出击，不要只等待别人来追你',
+                    '扩大社交圈，多参加活动认识新人',
+                    '培养勇气，学会表达好感',
+                    '设定目标，每周至少参加一次社交活动',
+                    '利用线上交友平台，增加机会'
+                ],
+                recommendation: '从小的改变开始，比如主动和异性搭话'
+            },
+            {
+                condition: (scores) => scores.standard > 4 && scores.opportunity < 3.5,
+                icon: '🎯',
+                badge: '标准过高型',
+                title: '你的择偶标准可能过于理想化',
+                desc: '你对另一半有很高的期望和要求，希望找到一个近乎完美的人。但同时，符合你标准的人非常稀少。你可能在等待一个"不存在"的理想对象，而错过了很多其实不错的人。你的高标准可能源于理想化的期待或对自己不够自信的补偿。',
+                tips: [
+                    '区分"必要条件"和"加分项"',
+                    '没有完美的人，学会接纳不完美',
+                    '给看起来"还不错"的人一个机会',
+                    '反思标准是否现实，是否过于理想化',
+                    '适当降低非核心标准，扩大选择范围'
+                ],
+                recommendation: '列出你的择偶标准，标注哪些是必须，哪些可以妥协'
+            },
+            {
+                condition: (scores) => scores.desire < 2.5,
+                icon: '🌱',
+                badge: '恋爱意愿低',
+                title: '你目前对恋爱的渴望度不高',
+                desc: '你现在可能更享受单身生活，对恋爱没有强烈的渴望。你可能觉得一个人也很好，或者对恋爱持保留态度。这本身没有问题，但如果内心其实想要爱情，只是因为害怕、受过伤或其他原因而压抑需求，就需要正视自己的真实感受。',
+                tips: [
+                    '正视内心真实想法，你真的不想恋爱吗？',
+                    '如果是害怕，试着面对恐惧',
+                    '如果真心享受单身，就坦然接受',
+                    '不要因为社会压力而强迫自己',
+                    '保持开放，机会来了不要错过'
+                ],
+                recommendation: '享受当下，准备好了再开始'
+            },
+            {
+                condition: (scores) => scores.past > 3.5,
+                icon: '💔',
+                badge: '过往阴影型',
+                title: '过去的感情经历对你影响较大',
+                desc: '你可能还没有完全走出过去的感情伤痛，或者过去的经历让你对爱情产生了恐惧和不信任。你可能害怕再次受伤，因此在新的关系中变得谨慎甚至退缩。这些未愈合的伤口影响了你开始新关系的能力。',
+                tips: [
+                    '给自己时间疗伤，不要急于进入新关系',
+                    '学会放下，过去的不代表未来',
+                    '如果很难走出，寻求专业心理咨询',
+                    '不要把前任的错误归咎于新的对象',
+                    '每个人都是独立个体，给新关系一个机会'
+                ],
+                recommendation: '写下过去让你受伤的具体事件，进行情绪处理'
+            },
+            {
+                condition: (scores) => scores.eq < 2.5,
+                icon: '🤔',
+                badge: '情商待提升型',
+                title: '你在情感表达和沟通上需要提升',
+                desc: '你可能不太擅长感知他人的情绪，或者难以表达自己的感受。这导致在社交和感情中容易产生误解，或者让对方觉得你不够体贴。情商是可以培养的，通过学习和练习可以提升。',
+                tips: [
+                    '多观察他人的表情和肢体语言',
+                    '练习表达自己的感受，从"我感到..."开始',
+                    '学习倾听，给对方完整表达的空间',
+                    '阅读情商相关书籍，如《情商》',
+                    '多与人交流，在实践中提升'
+                ],
+                recommendation: '每天练习识别和表达一种情绪'
+            },
+            {
+                condition: (scores) => scores.self_worth < 2.5,
+                icon: '😔',
+                badge: '自信不足型',
+                title: '你对自己缺乏信心和认可',
+                desc: '你的自我价值感较低，可能觉得自己不够好，配不上好的对象。这种自卑可能来自过去的经历、外貌焦虑或其他原因。低自尊会影响你的行动力，也会在关系中表现出不安全感，反而降低你的吸引力。',
+                tips: [
+                    '发掘自己的优点，写下至少10个优点',
+                    '停止与他人比较，每个人都是独特的',
+                    '设定小目标并完成，建立成就感',
+                    '改善外在形象，提升自信',
+                    '如果自卑严重，寻求心理咨询'
+                ],
+                recommendation: '每天对镜子里的自己说"我值得被爱"'
+            },
+            {
+                condition: (scores) => true, // 默认综合型
+                icon: '🌟',
+                badge: '综合因素型',
+                title: '你的单身是多种因素综合的结果',
+                desc: '你的单身不是由单一因素造成的，而是多个维度共同作用的结果。你可能在某些方面做得不错，但在其他方面还有提升空间。好消息是，你没有特别突出的问题，通过有针对性的改进，脱单的可能性很大。',
+                tips: [
+                    '查看各维度得分，找出最需要改进的方面',
+                    '制定具体可行的改进计划',
+                    '不要指望一夜改变，循序渐进',
+                    '保持积极心态，相信自己值得爱',
+                    '多尝试不同的社交方式，找到适合自己的'
+                ],
+                recommendation: '从改进得分最低的维度开始'
+            }
         ]
     }
 };
@@ -447,11 +683,11 @@ let currentTest = '';
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let questions = [];
-let scores = {};
+let dimensionScores = {};
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 不再需要导航按钮
+    // 不需要按钮事件监听
 });
 
 // 选择测试类型
@@ -460,13 +696,11 @@ function selectTest(testType) {
     questions = questionsData[testType];
     userAnswers = new Array(questions.length).fill(null);
     currentQuestionIndex = 0;
-    scores = {};
+    dimensionScores = {};
     
-    // 显示问题容器
     document.getElementById('testSelect').style.display = 'none';
     document.getElementById('questionContainer').classList.add('active');
     
-    // 渲染题目
     renderQuestions();
     updateProgress();
 }
@@ -486,7 +720,7 @@ function renderQuestions() {
             <div class="question-text">${index + 1}. ${q.question}</div>
             <div class="options">
                 ${q.options.map((opt, i) => `
-                    <div class="option" data-index="${i}" onclick="selectOption(${index}, ${i})">
+                    <div class="option" data-index="${i}" data-score="${i + 1}" onclick="selectOption(${index}, ${i})">
                         ${opt}
                     </div>
                 `).join('')}
@@ -497,35 +731,30 @@ function renderQuestions() {
     });
 }
 
-// 选择选项（点击后自动下一题）
+// 选择选项（自动下一题）
 function selectOption(questionIndex, optionIndex) {
-    // 防止重复点击
     if (userAnswers[questionIndex] !== null) {
         return;
     }
     
     userAnswers[questionIndex] = optionIndex;
     
-    // 更新选项样式
     const questionDiv = document.querySelector(`.question[data-index="${questionIndex}"]`);
     questionDiv.querySelectorAll('.option').forEach((opt, i) => {
         opt.classList.toggle('selected', i === optionIndex);
-        // 选中后禁用所有选项
         opt.style.pointerEvents = 'none';
     });
     
     updateProgress();
     
-    // 延迟后自动跳转到下一题或显示结果
     setTimeout(() => {
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
             showQuestion(currentQuestionIndex);
         } else {
-            // 所有题目已完成，显示结果
             showResult();
         }
-    }, 300); // 300ms延迟，让用户看到选中效果
+    }, 300);
 }
 
 // 显示指定题目
@@ -536,7 +765,6 @@ function showQuestion(index) {
         q.style.display = i === index ? 'block' : 'none';
     });
     
-    // 更新题目计数器
     document.getElementById('questionCounter').textContent = `第 ${index + 1}/${questions.length} 题`;
 }
 
@@ -546,110 +774,136 @@ function updateProgress() {
     const progress = (answered / questions.length) * 100;
     document.getElementById('progressBar').style.width = progress + '%';
     
-    // 更新题目计数器
     if (document.getElementById('questionCounter')) {
         document.getElementById('questionCounter').textContent = `第 ${currentQuestionIndex + 1}/${questions.length} 题`;
     }
 }
 
-// 计算得分
-function calculateScore() {
-    scores = {};
+// 计算维度得分（科学化）
+function calculateDimensionScores() {
+    dimensionScores = {};
+    const dimensionCounts = {};
     
     questions.forEach((q, index) => {
         const answer = userAnswers[index];
-        const type = q.type;
+        const dimension = q.dimension;
+        const weight = q.weight || 1;
         
-        if (!scores[type]) {
-            scores[type] = 0;
+        // 分数为1-5，对应选项0-4
+        let score = answer + 1;
+        
+        // 处理反向计分
+        if (q.reverse) {
+            score = 6 - score;
         }
         
-        scores[type] += answer;
+        // 加权计分
+        const weightedScore = score * weight;
+        
+        if (!dimensionScores[dimension]) {
+            dimensionScores[dimension] = 0;
+            dimensionCounts[dimension] = 0;
+        }
+        
+        dimensionScores[dimension] += weightedScore;
+        dimensionCounts[dimension] += weight;
     });
+    
+    // 标准化到1-5分
+    for (let dim in dimensionScores) {
+        dimensionScores[dim] = dimensionScores[dim] / dimensionCounts[dim];
+    }
 }
 
 // 显示结果
 function showResult() {
-    calculateScore();
+    calculateDimensionScores();
     
-    let result;
-    if (currentTest === 'mate') {
-        result = getMateResult();
-    } else {
-        result = getSingleResult();
+    const resultData = scientificResults[currentTest];
+    let matchedType = null;
+    
+    // 找到匹配的类型（按顺序检查条件）
+    for (let type of resultData.types) {
+        if (type.condition(dimensionScores)) {
+            matchedType = type;
+            break;
+        }
     }
     
     // 显示结果
     document.getElementById('questionContainer').classList.remove('active');
     document.getElementById('resultContainer').classList.add('active');
     
-    document.getElementById('resultIcon').textContent = result.icon;
-    document.getElementById('resultBadge').textContent = result.badge;
-    document.getElementById('resultTitle').textContent = result.title;
-    document.getElementById('resultDesc').textContent = result.desc;
+    document.getElementById('resultIcon').textContent = matchedType.icon;
+    document.getElementById('resultBadge').textContent = matchedType.badge;
+    document.getElementById('resultTitle').textContent = matchedType.title;
+    document.getElementById('resultDesc').textContent = matchedType.desc;
+    
+    // 显示维度分数图表
+    displayDimensionChart(resultData.dimensions);
     
     // 显示建议
     const tipsList = document.getElementById('resultTipsList');
-    tipsList.innerHTML = result.tips.map(tip => `<li>${tip}</li>`).join('');
-}
-
-// 获取择偶标准结果
-function getMateResult() {
-    // 找出得分最高的维度
-    let maxType = '';
-    let maxScore = -1;
+    tipsList.innerHTML = matchedType.tips.map(tip => `<li>${tip}</li>`).join('');
     
-    for (let type in scores) {
-        if (scores[type] > maxScore) {
-            maxScore = scores[type];
-            maxType = type;
-        }
-    }
-    
-    // 根据维度返回结果
-    if (maxType === 'material' || maxType === 'money') {
-        return mateResults.material_high;
-    } else if (maxType === 'appearance') {
-        return mateResults.appearance_high;
-    } else if (maxType === 'personality' || maxType === 'values' || maxType === 'tolerance') {
-        return mateResults.personality_high;
-    } else {
-        return mateResults.balanced;
+    // 如果有推荐
+    if (matchedType.recommendation) {
+        tipsList.innerHTML += `<li style="color: #f5576c; font-weight: bold;">💡 ${matchedType.recommendation}</li>`;
     }
 }
 
-// 获取单身原因结果
-function getSingleResult() {
-    // 分析答案模式
-    const hasHighStandard = scores.standard && scores.standard > 2;
-    const isPassive = (scores.initiative && scores.initiative < 2) || (scores.action && userAnswers[7] === 0);
-    const smallCircle = (scores.reason && userAnswers[3] === 0) || (scores.social && userAnswers[8] < 2);
-    const notReady = (scores.desire && userAnswers[5] === 3) || (scores.acceptance && userAnswers[15] > 1);
-    const lowEq = scores.eq && userAnswers[6] > 1;
-    
-    if (hasHighStandard && userAnswers[1] === 0) {
-        return singleResults.too_picky;
-    } else if (isPassive) {
-        return singleResults.too_passive;
-    } else if (smallCircle) {
-        return singleResults.circle_small;
-    } else if (notReady) {
-        return singleResults.not_ready;
-    } else if (lowEq) {
-        return singleResults.low_eq;
-    } else {
-        // 默认结果
-        return singleResults.circle_small;
+// 显示维度得分图表
+function displayDimensionChart(dimensions) {
+    const chartContainer = document.getElementById('dimensionChart');
+    if (!chartContainer) {
+        const container = document.createElement('div');
+        container.id = 'dimensionChart';
+        container.style.cssText = 'margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;';
+        
+        let chartHTML = '<h4 style="color: #f5576c; margin-bottom: 15px;">📊 你的各维度得分</h4>';
+        
+        dimensions.forEach(dim => {
+            const score = dimensionScores[dim.name] || 0;
+            const percentage = (score / 5) * 100;
+            const color = getScoreColor(score);
+            
+            chartHTML += `
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="font-weight: bold;">${dim.label}</span>
+                        <span style="color: ${color};">${score.toFixed(1)}/5.0</span>
+                    </div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">${dim.description}</div>
+                    <div style="width: 100%; height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                        <div style="width: ${percentage}%; height: 100%; background: ${color}; transition: width 0.5s;"></div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = chartHTML;
+        document.getElementById('resultDesc').after(container);
     }
 }
 
-// 重新开始测试
+// 根据分数获取颜色
+function getScoreColor(score) {
+    if (score >= 4) return '#4CAF50';
+    if (score >= 3) return '#FFC107';
+    if (score >= 2) return '#FF9800';
+    return '#F44336';
+}
+
+// 重新开始
 function restartTest() {
     currentTest = '';
     currentQuestionIndex = 0;
     userAnswers = [];
     questions = [];
-    scores = {};
+    dimensionScores = {};
+    
+    const chart = document.getElementById('dimensionChart');
+    if (chart) chart.remove();
     
     document.getElementById('resultContainer').classList.remove('active');
     document.getElementById('questionContainer').classList.remove('active');
@@ -660,17 +914,16 @@ function restartTest() {
 function shareResult() {
     const badge = document.getElementById('resultBadge').textContent;
     const title = document.getElementById('resultTitle').textContent;
-    const testName = currentTest === 'mate' ? '择偶标准测试' : '单身原因测试';
-    const text = `我在【${testName}】中的结果是：${badge} - ${title}！你也来测测吧！`;
+    const testName = currentTest === 'mate' ? '科学择偶标准测试' : '科学单身原因测试';
+    const text = `我在【${testName}】中的结果是：${badge} - ${title}！这是基于心理学理论的专业测试，你也来测测吧！`;
     
     if (navigator.share) {
         navigator.share({
-            title: '情感倾向测试',
+            title: '情感倾向科学测试',
             text: text,
             url: window.location.href
         }).catch(() => {});
     } else {
-        // 复制到剪贴板
         const textarea = document.createElement('textarea');
         textarea.value = text + ' ' + window.location.href;
         document.body.appendChild(textarea);
