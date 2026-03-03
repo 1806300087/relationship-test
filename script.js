@@ -9,7 +9,7 @@ const questionsData = {
                 '性格温柔、善解人意',
                 '幽默风趣、会聊天'
             ],
-            type: 'material' // material经济, appearance外貌, personality性格, humor幽默
+            type: 'material'
         },
         {
             question: '第一次约会，对方迟到了30分钟，你的反应是？',
@@ -19,7 +19,7 @@ const questionsData = {
                 '直接问原因，看是否合理',
                 '很生气，觉得不尊重人'
             ],
-            type: 'tolerance' // 包容度
+            type: 'tolerance'
         },
         {
             question: '你更希望另一半是什么样的？',
@@ -29,7 +29,7 @@ const questionsData = {
                 '顾家体贴，以家庭为重',
                 '独立自主，有自己的生活'
             ],
-            type: 'lifestyle' // 生活方式
+            type: 'lifestyle'
         },
         {
             question: '你觉得感情中最重要的是什么？',
@@ -39,7 +39,7 @@ const questionsData = {
                 '相互吸引，要有心动的感觉',
                 '相互信任，坦诚相待最关键'
             ],
-            type: 'values' // 价值观
+            type: 'values'
         },
         {
             question: '如果对方家境普通但人很好，你会选择吗？',
@@ -59,7 +59,7 @@ const questionsData = {
                 '比较困难，需要经常见面',
                 '不能接受，一定要在同一个城市'
             ],
-            type: 'commitment' // 承诺度
+            type: 'commitment'
         },
         {
             question: '恋爱中你更看重哪一点？',
@@ -69,7 +69,7 @@ const questionsData = {
                 '两个人在一起的感觉',
                 '对方的个人能力和潜力'
             ],
-            type: 'priority' // 优先级
+            type: 'priority'
         },
         {
             question: '你理想中的约会是什么样的？',
@@ -80,6 +80,86 @@ const questionsData = {
                 '逛街购物、喝下午茶'
             ],
             type: 'lifestyle'
+        },
+        {
+            question: '对方在争吵时说了很伤人的话，你会？',
+            options: [
+                '冷战，等对方先道歉',
+                '当场翻脸，无法容忍',
+                '虽然难过，但会理性沟通',
+                '装作不在意，但心里记着'
+            ],
+            type: 'conflict'
+        },
+        {
+            question: '你希望另一半的身高是？',
+            options: [
+                '必须符合我的理想标准',
+                '有要求，但可以适当接受',
+                '不是特别在意',
+                '完全不在乎'
+            ],
+            type: 'appearance'
+        },
+        {
+            question: '对方工作很忙，经常加班，你会？',
+            options: [
+                '理解支持，事业重要',
+                '希望能多陪陪我',
+                '会有点不满，但能接受',
+                '无法忍受，感情需要时间'
+            ],
+            type: 'understanding'
+        },
+        {
+            question: '你更喜欢什么性格的人？',
+            options: [
+                '外向开朗，能带动气氛',
+                '安静内敛，成熟稳重',
+                '温柔体贴，善解人意',
+                '独立自信，有主见'
+            ],
+            type: 'personality'
+        },
+        {
+            question: '对方的朋友圈经常晒你们的合照，你会？',
+            options: [
+                '很开心，喜欢被公开',
+                '无所谓，随便对方',
+                '有点害羞，但能接受',
+                '不太喜欢，觉得太高调'
+            ],
+            type: 'privacy'
+        },
+        {
+            question: '恋爱中你能接受的消费观是？',
+            options: [
+                'AA制，经济独立',
+                '男方多付一些',
+                '谁有钱谁付，无所谓',
+                '应该由男方承担大部分'
+            ],
+            type: 'money'
+        },
+        {
+            question: '你希望结婚后的生活是？',
+            options: [
+                '继续打拼事业，追求更好',
+                '稳定平淡，岁月静好',
+                '充满激情，不断尝试新事物',
+                '以家庭为重，相夫教子'
+            ],
+            type: 'future'
+        },
+        {
+            question: '如果对方的父母不喜欢你，你会？',
+            options: [
+                '努力改变，争取认可',
+                '坚持到底，感情最重要',
+                '会很难过，但会考虑分手',
+                '直接放弃，家庭反对太难'
+            ],
+            type: 'family'
         }
     ],
     'single': [
@@ -162,11 +242,91 @@ const questionsData = {
                 '想太多，最后放弃'
             ],
             type: 'action'
+        },
+        {
+            question: '你平时的社交活动多吗？',
+            options: [
+                '很少，基本宅在家',
+                '偶尔参加，但不主动',
+                '经常参加各种活动',
+                '不喜欢社交，更喜欢独处'
+            ],
+            type: 'social'
+        },
+        {
+            question: '你对前任的态度是？',
+            options: [
+                '已经彻底放下了',
+                '偶尔还会想起',
+                '还没完全走出来',
+                '从没谈过恋爱'
+            ],
+            type: 'past'
+        },
+        {
+            question: '你觉得自己最大的缺点是？',
+            options: [
+                '太挑剔，要求太高',
+                '太被动，不会主动',
+                '不够自信，容易自卑',
+                '太独立，不需要另一半'
+            ],
+            type: 'weakness'
+        },
+        {
+            question: '看到朋友恋爱秀恩爱，你会？',
+            options: [
+                '羡慕，也想谈恋爱',
+                '无感，不觉得有什么',
+                '有点酸，但不会说',
+                '觉得没必要，单身挺好'
+            ],
+            type: 'envy'
+        },
+        {
+            question: '你愿意为了爱情改变自己吗？',
+            options: [
+                '完全可以，爱就要付出',
+                '可以改一些，但有底线',
+                '不太愿意，做自己最重要',
+                '完全不会，对方要接受真实的我'
+            ],
+            type: 'flexibility'
+        },
+        {
+            question: '你理想的恋爱节奏是？',
+            options: [
+                '快速确定关系，不浪费时间',
+                '慢慢了解，不着急',
+                '感觉对了就在一起',
+                '没想过，随缘吧'
+            ],
+            type: 'pace'
+        },
+        {
+            question: '你最害怕感情中的什么？',
+            options: [
+                '被辜负、被背叛',
+                '失去自我、太依赖',
+                '争吵、冷战',
+                '最后还是会分开'
+            ],
+            type: 'fear'
+        },
+        {
+            question: '如果一直单身下去，你会？',
+            options: [
+                '很焦虑，一定要脱单',
+                '有点担心，但能接受',
+                '无所谓，一个人也挺好',
+                '没想过，应该不会吧'
+            ],
+            type: 'acceptance'
         }
     ]
 };
 
-// 择偶标准结果
+// 择偶标准结果（保持原有结果）
 const mateResults = {
     'material_high': {
         icon: '💰',
@@ -218,7 +378,7 @@ const mateResults = {
     }
 };
 
-// 单身原因结果
+// 单身原因结果（保持原有结果）
 const singleResults = {
     'too_picky': {
         icon: '🎯',
@@ -287,14 +447,11 @@ let currentTest = '';
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let questions = [];
-let scores = {}; // 记录各维度得分
+let scores = {};
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 导航按钮事件
-    document.getElementById('prevBtn').addEventListener('click', prevQuestion);
-    document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-    document.getElementById('submitBtn').addEventListener('click', showResult);
+    // 不再需要导航按钮
 });
 
 // 选择测试类型
@@ -340,56 +497,47 @@ function renderQuestions() {
     });
 }
 
-// 选择选项
+// 选择选项（点击后自动下一题）
 function selectOption(questionIndex, optionIndex) {
+    // 防止重复点击
+    if (userAnswers[questionIndex] !== null) {
+        return;
+    }
+    
     userAnswers[questionIndex] = optionIndex;
     
     // 更新选项样式
     const questionDiv = document.querySelector(`.question[data-index="${questionIndex}"]`);
     questionDiv.querySelectorAll('.option').forEach((opt, i) => {
         opt.classList.toggle('selected', i === optionIndex);
+        // 选中后禁用所有选项
+        opt.style.pointerEvents = 'none';
     });
     
     updateProgress();
-}
-
-// 上一题
-function prevQuestion() {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        showQuestion(currentQuestionIndex);
-        updateProgress();
-    }
-}
-
-// 下一题
-function nextQuestion() {
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        showQuestion(currentQuestionIndex);
-        updateProgress();
-    }
+    
+    // 延迟后自动跳转到下一题或显示结果
+    setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
+        } else {
+            // 所有题目已完成，显示结果
+            showResult();
+        }
+    }, 300); // 300ms延迟，让用户看到选中效果
 }
 
 // 显示指定题目
 function showQuestion(index) {
+    currentQuestionIndex = index;
+    
     document.querySelectorAll('.question').forEach((q, i) => {
         q.style.display = i === index ? 'block' : 'none';
     });
     
     // 更新题目计数器
     document.getElementById('questionCounter').textContent = `第 ${index + 1}/${questions.length} 题`;
-    
-    // 更新按钮状态
-    document.getElementById('prevBtn').disabled = index === 0;
-    
-    if (index === questions.length - 1) {
-        document.getElementById('nextBtn').style.display = 'none';
-        document.getElementById('submitBtn').style.display = 'inline-block';
-    } else {
-        document.getElementById('nextBtn').style.display = 'inline-block';
-        document.getElementById('submitBtn').style.display = 'none';
-    }
 }
 
 // 更新进度条
@@ -416,20 +564,12 @@ function calculateScore() {
             scores[type] = 0;
         }
         
-        // 根据选项位置计算分数
         scores[type] += answer;
     });
 }
 
 // 显示结果
 function showResult() {
-    // 检查是否所有题目都已回答
-    const unanswered = userAnswers.findIndex(a => a === null);
-    if (unanswered !== -1) {
-        alert(`请先回答第 ${unanswered + 1} 题！`);
-        return;
-    }
-    
     calculateScore();
     
     let result;
@@ -467,11 +607,11 @@ function getMateResult() {
     }
     
     // 根据维度返回结果
-    if (maxType === 'material') {
+    if (maxType === 'material' || maxType === 'money') {
         return mateResults.material_high;
     } else if (maxType === 'appearance') {
         return mateResults.appearance_high;
-    } else if (maxType === 'personality' || maxType === 'values') {
+    } else if (maxType === 'personality' || maxType === 'values' || maxType === 'tolerance') {
         return mateResults.personality_high;
     } else {
         return mateResults.balanced;
@@ -482,14 +622,14 @@ function getMateResult() {
 function getSingleResult() {
     // 分析答案模式
     const hasHighStandard = scores.standard && scores.standard > 2;
-    const isPassive = scores.initiative && scores.initiative < 2;
-    const smallCircle = scores.reason && userAnswers[3] === 0;
-    const notReady = scores.desire && userAnswers[5] === 3;
+    const isPassive = (scores.initiative && scores.initiative < 2) || (scores.action && userAnswers[7] === 0);
+    const smallCircle = (scores.reason && userAnswers[3] === 0) || (scores.social && userAnswers[8] < 2);
+    const notReady = (scores.desire && userAnswers[5] === 3) || (scores.acceptance && userAnswers[15] > 1);
     const lowEq = scores.eq && userAnswers[6] > 1;
     
     if (hasHighStandard && userAnswers[1] === 0) {
         return singleResults.too_picky;
-    } else if (isPassive && (userAnswers[2] === 0 || userAnswers[7] === 0)) {
+    } else if (isPassive) {
         return singleResults.too_passive;
     } else if (smallCircle) {
         return singleResults.circle_small;
