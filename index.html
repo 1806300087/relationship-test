@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情感倾向测试 - 了解你的爱情观</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .test-select {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .test-card {
+            padding: 30px;
+            border: 2px solid #f093fb;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+        }
+        
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+            border-color: #f5576c;
+        }
+        
+        .test-card h3 {
+            font-size: 24px;
+            color: #f5576c;
+            margin-bottom: 10px;
+        }
+        
+        .test-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .question-container {
+            display: none;
+        }
+        
+        .question-container.active {
+            display: block;
+        }
+        
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .restart-btn {
+            padding: 10px 25px;
+            border: 2px solid #f093fb;
+            border-radius: 50px;
+            background: white;
+            color: #f093fb;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+        
+        .question-counter {
+            font-size: 16px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .progress {
+            margin: 20px 0;
+            height: 8px;
+            background: #ffe0e9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%);
+            border-radius: 15px;
+            border-left: 4px solid #f5576c;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+        
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #ffe0e9;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .option:hover {
+            border-color: #f093fb;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .nav-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+        
+        .nav-btn.secondary {
+            background: #ffe0e9;
+            color: #f5576c;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result-container {
+            display: none;
+            text-align: center;
+        }
+        
+        .result-container.active {
+            display: block;
+        }
+        
+        .result-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        
+        .result-title {
+            font-size: 28px;
+            color: #333;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .result-badge {
+            display: inline-block;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .result-desc {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .result-tips {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f5576c;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .result-tips h4 {
+            color: #f5576c;
+            margin-bottom: 10px;
+        }
+        
+        .result-tips ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .result-tips li {
+            padding: 5px 0;
+            color: #666;
+        }
+        
+        .result-tips li:before {
+            content: "💕 ";
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .share-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .share-btn.restart {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .share-btn.share {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💕 情感倾向测试</h1>
+            <p>了解你的爱情观，找到属于你的幸福</p>
+        </div>
+        
+        <!-- 测试选择 -->
+        <div id="testSelect" class="test-select">
+            <div class="test-card" onclick="selectTest('mate')">
+                <h3>💑 择偶标准测试</h3>
+                <p>你最看重伴侣的哪些特质？测测你的理想型是什么样的！通过8个场景问题，深入了解你内心真正的择偶观。</p>
+            </div>
+            <div class="test-card" onclick="selectTest('single')">
+                <h3>💔 单身原因测试</h3>
+                <p>为什么还单身？是太挑剔还是缘分未到？8道题帮你找到症结所在，给出脱单建议！</p>
+            </div>
+        </div>
+        
+        <!-- 测试题目 -->
+        <div id="questionContainer" class="question-container">
+            <div class="top-nav">
+                <div class="question-counter" id="questionCounter">第 1/8 题</div>
+                <button class="restart-btn" onclick="restartTest()">🔄 重新选择</button>
+            </div>
+            
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            
+            <div id="questionsWrapper"></div>
+            
+            <div class="nav-buttons">
+                <button id="prevBtn" class="nav-btn secondary">上一题</button>
+                <button id="nextBtn" class="nav-btn primary">下一题</button>
+                <button id="submitBtn" class="nav-btn primary" style="display:none;">查看结果</button>
+            </div>
+        </div>
+        
+        <!-- 结果页面 -->
+        <div id="resultContainer" class="result-container">
+            <div class="result-icon" id="resultIcon">💖</div>
+            <div class="result-badge" id="resultBadge">你的结果</div>
+            <div class="result-title" id="resultTitle">测试结果</div>
+            <div class="result-desc" id="resultDesc">结果描述</div>
+            <div class="result-tips" id="resultTips">
+                <h4>💡 给你的建议</h4>
+                <ul id="resultTipsList"></ul>
+            </div>
+            
+            <div class="share-buttons">
+                <button class="share-btn restart" onclick="restartTest()">重新测试</button>
+                <button class="share-btn share" onclick="shareResult()">分享结果</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
