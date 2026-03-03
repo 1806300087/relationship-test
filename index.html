@@ -4,6 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>情感倾向测试 - 了解你的爱情观</title>
+    <script>
+        // 邀请码验证
+        (function() {
+            const verified = localStorage.getItem('inviteVerified');
+            const type = localStorage.getItem('inviteType');
+            const testCount = parseInt(localStorage.getItem('testCompletedCount') || '0');
+            
+            // 未验证，跳转到邀请码页面
+            if (verified !== 'true') {
+                window.location.href = 'invite-gate.html';
+                return;
+            }
+            
+            // 单次码且已使用过
+            if (type === 'single' && testCount >= 1) {
+                alert('您的邀请码已使用完毕，请购买新的邀请码继续测试');
+                localStorage.removeItem('inviteVerified');
+                window.location.href = 'invite-gate.html';
+                return;
+            }
+            
+            // 双次码且已使用2次
+            if (type === 'double' && testCount >= 2) {
+                alert('您的邀请码已使用完毕（2次测试已完成），请购买新的邀请码继续测试');
+                localStorage.removeItem('inviteVerified');
+                window.location.href = 'invite-gate.html';
+                return;
+            }
+            
+            // 永久码：无限制，直接放行
+        })();
+    </script>
     <style>
         * {
             margin: 0;

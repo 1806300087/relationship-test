@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>输入邀请码 - 情感倾向科学测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .invite-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .invite-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: border-color 0.3s;
+            font-weight: bold;
+        }
+        
+        .invite-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .verify-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .verify-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .verify-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .verify-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #66bb6a;
+        }
+        
+        .purchase-link {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .purchase-link p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .xianyu-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .xianyu-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .features {
+            text-align: left;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .features h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .features ul {
+            list-style: none;
+        }
+        
+        .features li {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .demo-tip {
+            margin-top: 20px;
+            padding: 12px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="invite-container">
+        <div class="logo">💕</div>
+        <h1>情感倾向科学测试</h1>
+        <p class="subtitle">基于心理学理论的专业测评系统<br>已有<strong>10,000+</strong>人完成测试</p>
+        
+        <div class="highlight">
+            ✨ 本测试需要邀请码才能使用<br>
+            每个邀请码可完成 <strong>1次/2次/永久</strong> 测试
+        </div>
+        
+        <div class="input-group">
+            <input 
+                type="text" 
+                class="invite-input" 
+                id="inviteCode" 
+                placeholder="请输入8位邀请码"
+                maxlength="8"
+            >
+        </div>
+        
+        <button class="verify-btn" id="verifyBtn">
+            🔓 开始测试
+        </button>
+        
+        <div class="message error-message" id="errorMessage"></div>
+        <div class="message success-message" id="successMessage">✅ 验证成功！正在跳转...</div>
+        
+        <div class="features">
+            <h3>🎯 测试特色</h3>
+            <ul>
+                <li>35道专业题目，科学严谨</li>
+                <li>基于Sternberg爱情三角理论</li>
+                <li>7大维度深度分析</li>
+                <li>个性化改善建议</li>
+                <li>可视化雷达图报告</li>
+            </ul>
+        </div>
+        
+        <div class="purchase-link">
+            <p>💰 还没有邀请码？</p>
+            <a href="#" class="xianyu-btn" id="purchaseBtn">
+                🛒 联系购买 ¥9.9
+            </a>
+            <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                购买后立即发货，自动发送邀请码
+            </p>
+        </div>
+        
+        <!-- 开发提示 -->
+        <div class="demo-tip" id="demoTip" style="display: none;">
+            <strong>🔧 开发者模式</strong><br>
+            测试邀请码：<code style="background: white; padding: 2px 6px; border-radius: 4px;">TEST2024</code>
+        </div>
+    </div>
+    
+    <script>
+        // ==================== 邀请码数据库 ====================
+        // 这里存放所有有效的邀请码
+        // 格式：{ "邀请码": { type: "类型", used: 是否已用, expire: 过期时间戳 } }
+        
+        const INVITE_CODES = {
+            // 测试邀请码（开发用，上线前删除）
+            'TEST2024': { type: 'permanent', used: false, expire: null },
+            
+            // ===== 单次测试码（¥9.9）- 2026-03-03 批次 =====
+            'DPRYUBYJ': { type: 'single', used: false, expire: null },
+            'VPFY965A': { type: 'single', used: false, expire: null },
+            'YDPEAGVV': { type: 'single', used: false, expire: null },
+            'JPHK2HU2': { type: 'single', used: false, expire: null },
+            'M2QVLBDR': { type: 'single', used: false, expire: null },
+            'M54M4U83': { type: 'single', used: false, expire: null },
+            '8ERS3GS3': { type: 'single', used: false, expire: null },
+            'Z5YKJ7NP': { type: 'single', used: false, expire: null },
+            '5848C8HD': { type: 'single', used: false, expire: null },
+            '95PNEPVQ': { type: 'single', used: false, expire: null },
+            'MZLAW7P7': { type: 'single', used: false, expire: null },
+            'DND25U65': { type: 'single', used: false, expire: null },
+            '5NM89PT5': { type: 'single', used: false, expire: null },
+            'LA23XFXA': { type: 'single', used: false, expire: null },
+            'H52VM7CT': { type: 'single', used: false, expire: null },
+            'WQ95BRMF': { type: 'single', used: false, expire: null },
+            'QHKXUM2U': { type: 'single', used: false, expire: null },
+            'N7WDJDNS': { type: 'single', used: false, expire: null },
+            'PPMVNNGL': { type: 'single', used: false, expire: null },
+            'B8CA57HT': { type: 'single', used: false, expire: null },
+            
+            // ===== 单次测试码（¥9.9）=====
+            'A1B2C3D4': { type: 'single', used: false, expire: null },
+            'E5F6G7H8': { type: 'single', used: false, expire: null },
+            'J9K0L1M2': { type: 'single', used: false, expire: null },
+            'N3P4Q5R6': { type: 'single', used: false, expire: null },
+            'S7T8U9V0': { type: 'single', used: false, expire: null },
+            
+            // ===== 双测试码（¥16.8）=====
+            'W1X2Y3Z4': { type: 'double', used: false, expire: null },
+            'A5B6C7D8': { type: 'double', used: false, expire: null },
+            'E9F0G1H2': { type: 'double', used: false, expire: null },
+            
+            // ===== 永久访问码（¥29.9）=====
+            'VIP12345': { type: 'permanent', used: false, expire: null },
+            'VIP67890': { type: 'permanent', used: false, expire: null },
+            
+            // 在这里继续添加新的邀请码...
+        };
+        
+        // ==================== 本地存储键名 ====================
+        const STORAGE_KEYS = {
+            USED_CODES: 'usedInviteCodes',      // 已使用的邀请码列表
+            CURRENT_CODE: 'currentInviteCode',  // 当前使用的邀请码
+            INVITE_TYPE: 'inviteType',          // 邀请码类型
+            VERIFIED: 'inviteVerified',         // 是否已验证
+            VERIFIED_AT: 'inviteVerifiedAt',    // 验证时间
+            TEST_COUNT: 'testCompletedCount'    // 已完成测试次数
+        };
+        
+        // ==================== 工具函数 ====================
+        
+        // 获取已使用的邀请码列表
+        function getUsedCodes() {
+            const used = localStorage.getItem(STORAGE_KEYS.USED_CODES);
+            return used ? JSON.parse(used) : [];
+        }
+        
+        // 标记邀请码为已使用
+        function markCodeAsUsed(code) {
+            const usedCodes = getUsedCodes();
+            if (!usedCodes.includes(code)) {
+                usedCodes.push(code);
+                localStorage.setItem(STORAGE_KEYS.USED_CODES, JSON.stringify(usedCodes));
+            }
+        }
+        
+        // 检查邀请码是否已在本地使用过
+        function isCodeUsedLocally(code) {
+            return getUsedCodes().includes(code);
+        }
+        
+        // 获取已完成的测试次数
+        function getTestCount() {
+            return parseInt(localStorage.getItem(STORAGE_KEYS.TEST_COUNT) || '0');
+        }
+        
+        // ==================== 验证逻辑 ====================
+        
+        function verifyCode() {
+            const codeInput = document.getElementById('inviteCode');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            const code = codeInput.value.trim().toUpperCase();
+            
+            // 清空消息
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            // 验证格式
+            if (code.length !== 8) {
+                showError('请输入8位邀请码');
+                return;
+            }
+            
+            // 检查邀请码是否存在
+            if (!INVITE_CODES[code]) {
+                showError('邀请码不存在或已失效 ❌');
+                return;
+            }
+            
+            const codeData = INVITE_CODES[code];
+            
+            // 检查是否在本地已使用（单次码）
+            if (codeData.type === 'single' && isCodeUsedLocally(code)) {
+                showError('此邀请码已被使用 ❌');
+                return;
+            }
+            
+            // 检查是否过期
+            if (codeData.expire && Date.now() > codeData.expire) {
+                showError('邀请码已过期 ❌');
+                return;
+            }
+            
+            // 验证成功！
+            verifyBtn.disabled = true;
+            successMsg.style.display = 'block';
+            
+            // 保存验证信息
+            localStorage.setItem(STORAGE_KEYS.CURRENT_CODE, code);
+            localStorage.setItem(STORAGE_KEYS.INVITE_TYPE, codeData.type);
+            localStorage.setItem(STORAGE_KEYS.VERIFIED, 'true');
+            localStorage.setItem(STORAGE_KEYS.VERIFIED_AT, Date.now().toString());
+            
+            // 如果是单次码，立即标记为已使用
+            if (codeData.type === 'single') {
+                markCodeAsUsed(code);
+            }
+            
+            // 延迟跳转
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        }
+        
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            
+            // 抖动效果
+            errorMsg.style.animation = 'none';
+            setTimeout(() => {
+                errorMsg.style.animation = 'shake 0.5s';
+            }, 10);
+        }
+        
+        // ==================== 事件监听 ====================
+        
+        // 自动转大写
+        document.getElementById('inviteCode').addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        });
+        
+        // 回车验证
+        document.getElementById('inviteCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyCode();
+            }
+        });
+        
+        // 按钮点击
+        document.getElementById('verifyBtn').addEventListener('click', verifyCode);
+        
+        // 购买按钮（你需要替换为实际链接）
+        document.getElementById('purchaseBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('请联系卖家获取邀请码\n\n咸鱼店铺：[你的店铺名]\n微信：[你的微信]');
+            // 或者跳转到咸鱼链接：
+            // window.open('https://m.tb.cn/your-link', '_blank');
+        });
+        
+        // ==================== 页面加载检查 ====================
+        
+        window.addEventListener('load', () => {
+            const verified = localStorage.getItem(STORAGE_KEYS.VERIFIED);
+            const type = localStorage.getItem(STORAGE_KEYS.INVITE_TYPE);
+            const testCount = getTestCount();
+            
+            // 永久码：直接放行
+            if (verified === 'true' && type === 'permanent') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 双次码：检查测试次数
+            if (verified === 'true' && type === 'double' && testCount < 2) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 显示开发者提示（开发环境）
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                document.getElementById('demoTip').style.display = 'block';
+            }
+        });
+        
+        // 抖动动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

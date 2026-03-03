@@ -784,6 +784,9 @@ function showResult() {
     if (matchedType.recommendation) {
         tipsList.innerHTML += `<li style="color: #f5576c; font-weight: bold;">💡 ${matchedType.recommendation}</li>`;
     }
+    
+    // ===== 邀请码系统：增加测试完成计数 =====
+    incrementTestCount();
 }
 
 // 显示维度得分图表
@@ -866,4 +869,54 @@ function shareResult() {
         document.body.removeChild(textarea);
         alert('结果已复制到剪贴板！');
     }
+}
+
+// ===== 邀请码系统相关函数 =====
+
+// 增加测试完成计数
+function incrementTestCount() {
+    const currentCount = parseInt(localStorage.getItem('testCompletedCount') || '0');
+    const newCount = currentCount + 1;
+    localStorage.setItem('testCompletedCount', newCount.toString());
+    
+    // 检查是否用完次数
+    const inviteType = localStorage.getItem('inviteType');
+    
+    if (inviteType === 'single' && newCount >= 1) {
+        showLimitReachedMessage('单次测试已完成');
+    } else if (inviteType === 'double' && newCount >= 2) {
+        showLimitReachedMessage('2次测试已全部完成');
+    }
+}
+
+// 显示次数用完提示
+function showLimitReachedMessage(message) {
+    // 在结果页面底部添加提示
+    setTimeout(() => {
+        const resultContainer = document.getElementById('resultContainer');
+        const limitTip = document.createElement('div');
+        limitTip.style.cssText = `
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+        `;
+        limitTip.innerHTML = `
+            <h3 style="margin-bottom: 10px;">✨ ${message}</h3>
+            <p style="margin-bottom: 15px; opacity: 0.9;">想继续测试？购买新的邀请码吧！</p>
+            <button onclick="window.location.href='invite-gate.html'" style="
+                padding: 12px 30px;
+                background: white;
+                color: #667eea;
+                border: none;
+                border-radius: 25px;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 14px;
+            ">🛒 购买邀请码</button>
+        `;
+        resultContainer.appendChild(limitTip);
+    }, 2000);
 }
