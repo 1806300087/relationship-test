@@ -159,18 +159,27 @@
         }
         
         .xianyu-btn {
-            display: inline-block;
-            padding: 12px 30px;
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
             background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
             color: white;
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 12px;
             font-weight: bold;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
         
         .xianyu-btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .xianyu-btn:active {
+            transform: translateY(0);
         }
         
         .features {
@@ -260,10 +269,21 @@
         </div>
         
         <div class="purchase-link">
-            <p>💰 还没有邀请码？</p>
-            <a href="#" class="xianyu-btn" id="purchaseBtn">
-                🛒 联系购买 ¥9.9
-            </a>
+            <p>💰 还没有邀请码？选择套餐购买：</p>
+            
+            <!-- 三个购买按钮 -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+                <a href="#" class="xianyu-btn" data-type="single" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    🎫 单次测试 ¥9.9
+                </a>
+                <a href="#" class="xianyu-btn" data-type="double" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    🎟️ 双次套餐 ¥16.8 <span style="background: rgba(255,255,255,0.3); padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 5px;">推荐</span>
+                </a>
+                <a href="#" class="xianyu-btn" data-type="permanent" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);">
+                    👑 永久访问 ¥29.9 <span style="background: rgba(255,255,255,0.3); padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 5px;">超值</span>
+                </a>
+            </div>
+            
             <p style="margin-top: 15px; font-size: 12px; color: #999;">
                 购买后立即发货，自动发送邀请码
             </p>
@@ -277,6 +297,18 @@
     </div>
     
     <script>
+        // ==================== 咸鱼商品链接配置 ====================
+        // 【重要】将下面的链接替换为你的实际咸鱼商品链接
+        const XIANYU_LINKS = {
+            single: 'https://m.tb.cn/YOUR-SINGLE-LINK',      // 单次测试 ¥9.9
+            double: 'https://m.tb.cn/YOUR-DOUBLE-LINK',      // 双次套餐 ¥16.8
+            permanent: 'https://m.tb.cn/YOUR-PERMANENT-LINK', // 永久访问 ¥29.9
+            
+            // 备用方案：如果还没上架商品，可以填店铺链接或联系方式
+            // single: 'weixin://YOUR-WECHAT',  // 微信跳转
+            // 或显示弹窗提示联系方式
+        };
+        
         // ==================== 邀请码数据库 ====================
         // 这里存放所有有效的邀请码
         // 格式：{ "邀请码": { type: "类型", used: 是否已用, expire: 过期时间戳 } }
@@ -453,12 +485,28 @@
         // 按钮点击
         document.getElementById('verifyBtn').addEventListener('click', verifyCode);
         
-        // 购买按钮（你需要替换为实际链接）
-        document.getElementById('purchaseBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('请联系卖家获取邀请码\n\n咸鱼店铺：[你的店铺名]\n微信：[你的微信]');
-            // 或者跳转到咸鱼链接：
-            // window.open('https://m.tb.cn/your-link', '_blank');
+        // 购买按钮 - 三个套餐
+        document.querySelectorAll('.xianyu-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const type = this.getAttribute('data-type');
+                const link = XIANYU_LINKS[type];
+                
+                // 检查链接是否已配置
+                if (!link || link.includes('YOUR-')) {
+                    // 如果链接未配置，显示提示
+                    const typeName = {
+                        single: '单次测试（¥9.9）',
+                        double: '双次套餐（¥16.8）',
+                        permanent: '永久访问（¥29.9）'
+                    }[type];
+                    
+                    alert(`购买${typeName}\n\n请联系卖家：\n\n微信：[你的微信]\n咸鱼店铺：[你的店铺名]\n\n或在咸鱼搜索"情感倾向测试"`);
+                } else {
+                    // 跳转到咸鱼商品页
+                    window.open(link, '_blank');
+                }
+            });
         });
         
         // ==================== 页面加载检查 ====================
